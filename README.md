@@ -11,4 +11,4 @@ Credit score cards are a common risk control method in the financial industry. I
 and data submitted by credit card applicants to predict the probability of future defaults and credit card
 borrowings. The bank or lending company is able to decide whether to issue a credit card to the applicant or
 not. Credit scores can objectively quantify the magnitude of risk.
-The project focused on predicting whether an applicant is qualified to receive a loan or not.
+The project focuses on predicting whether an applicant is qualified to receive a loan or not.
