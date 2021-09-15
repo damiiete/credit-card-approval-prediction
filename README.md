@@ -12,3 +12,6 @@ and data submitted by credit card applicants to predict the probability of futur
 borrowings. The bank or lending company is able to decide whether to issue a credit card to the applicant or
 not. Credit scores can objectively quantify the magnitude of risk.
 The project focuses on predicting whether an applicant is qualified to receive a loan or not.
+
+### Model Deployment
+The prediction application can be found <a href='https://share.streamlit.io/damiiete/credit-card-approval-prediction/production/credit_approval_app.py'>here</a>.
