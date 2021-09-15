@@ -1,32 +1,56 @@
-from pandas._config.config import options
 import streamlit as st
 import pandas as pd
+import pickle
 
 header = st.container()
-dataset = st.container()
 features = st.container()
-model_training = st.container()
+model = st.container()
+  
+#collecting user input
+def user_input():
+    col_1, col_2 = st.columns(2)
+    debt = col_1.slider('How much Debt?', min_value=0.0, max_value=100.0)
+    yearsEmployed = col_1.slider('Years of employment', min_value=0.0, max_value=100.0)
+    priorDefault = col_2.selectbox('Prior default? True=1, False=0', options=[0,1], index=0)
+    employed = col_2.selectbox('Employment status. True=1, False=0', options=[0,1], index=0)
+    income = col_1.slider('Total income per year', min_value=10, max_value=100000)
+    creditScore = col_2.slider("Customer's credit score", min_value=0, max_value=100)
 
-@st.cache
-def get_data(fileName):
-    credit_app = pd.read_csv(fileName, header=None)
-    return credit_app
+    data = {'Debt': debt, 'Years Employed': yearsEmployed, 'Prior Default': priorDefault, 'Employed': employed, 'Income': income, 'Credit Score': creditScore}
+    features = pd.DataFrame(data, index=[0])
+    return features
 
 with header:
-    st.title("Welcome to my awesome project")
+    st.title("""
+    Credit Approval Prediction App
+    **This app predicts the approval status of credit card request**
+    """)
+    
 
-with dataset:
-    st.header('Credit Approval Dataset')
-    credit_app = get_data('Data/credit_approval.data')
-    st.write(credit_app.head())
 with features:
-    st.header('Features selection')
+    st.header('Features Input')
+    st.write('Please input features')
+    df = user_input()
+    st.write("User Input Parameters")
+    st.write(df)
+    
 
-with model_training:
-    st.header('Model Training')
-    st.text('This section the model is....')
-    sel_col, disp_col = st.columns(2)
 
-max_depth = sel_col.slider('What should be the max depth of the model?', min_value=10, max_value=100)
-n_est = sel_col.selectbox('How many estimators should there be?', options=[100,200,300,'No limit'], index=0)
-user_inp =  sel_col.text_input('Which feature should be input?', 'gender') 
+with model:
+    #loading saved model
+    filename = "creditApproval_model.sav"
+    logreg = pickle.load(open(filename, 'rb'))
+
+    def prediction():
+        prediction = logreg.predict(df)
+        result = ''
+        if prediction == 0:
+            result = 'Rejected'
+        else:
+            result = 'Approved'
+        return result
+    #prediction button
+    if st.button("Predict"): 
+        result = prediction()
+        st.success('Your request is {}'.format(result))
+        
